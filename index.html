@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+<body>
+    
+    <div id="app" class="container">
+       
+
+        <!-- Navbar -->
+        <div class="row">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                  <a @click.prevent="isCartVisiable = false" class="navbar-brand" href="#">Products</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                      <li class="nav-item">
+                        <a @click.prevent="isCartVisiable = true" class="nav-link active" aria-current="page" href="#">Cart</a>
+                      </li>
+                     
+                    </ul>
+                    
+                  </div>
+                </div>
+              </nav>
+        </div>
+
+        <!-- products -->
+        <div class="row" v-if="isCartVisiable == false">
+            <div class="col-12 col-md-4 mt-3 mb-3" v-for="product in products">
+
+                <div class="card" >
+                    <img :src="product.thumbnail" class="card-img-top" style="height:200px">
+                    <div class="card-body" style="height: 220px;">
+                      <h5 class="card-title">{{product.title}}</h5>
+                      <p class="card-text">{{product.description}}</p>
+
+                      <div class="d-flex justify-content-between align-items-center">
+
+                          <button class="btn btn-primary" @click.prevent="addToCart(product)" :disabled="product.stock == 0 ">Add To Cart</button>
+                          <h5>stock : {{product.stock}}</h5>
+                      </div>
+                    </div>
+                  </div>
+
+            </div>
+        </div>
+
+        <!-- cart -->
+        <div class="row" v-else>
+           <h2>Products Cart</h2>
+
+           <table class="table" v-if="cart.length > 0">
+            <thead>
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">name</th>
+                <th scope="col">price</th>
+                <th scope="col">quantity</th>
+                <th scope="col">controls</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in cart">
+                <th scope="row">{{item.product.id}}</th>
+                <td>{{item.product.title}}</td>
+                <td>{{item.product.price}}</td>
+                <td>{{item.quantity}}</td>
+                <td>
+                    <button @click.prevent="DeleteFromCart(item)" class="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+           
+            </tbody>
+          </table>
+
+          <h3 v-else class="alert alert-warning display-2 text-center">Your Cart Empty</h3>
+
+        </div>
+
+    </div>
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/vue.global.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
